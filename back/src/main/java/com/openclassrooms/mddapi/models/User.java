@@ -1,6 +1,7 @@
 package com.openclassrooms.mddapi.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -19,6 +20,14 @@ public class User {
   private String email;
 
   private String password;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+    name = "user_themes",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "theme_id")
+  )
+  private List<Theme> themes;
 
   private Date created_at;
 
