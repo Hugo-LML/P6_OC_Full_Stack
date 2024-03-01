@@ -14,8 +14,12 @@ public class Comment {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
+  @OneToOne
+  @JoinColumn(name = "user_username", referencedColumnName = "username")
   private String user_username;
 
+  @OneToOne
+  @JoinColumn(name = "article_id", referencedColumnName = "id")
   private Integer article_id;
 
   private String content;

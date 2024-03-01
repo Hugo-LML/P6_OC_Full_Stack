@@ -16,8 +16,12 @@ public class Article {
 
   private String title;
 
+  @OneToOne
+  @JoinColumn(name = "user_username", referencedColumnName = "username")
   private String user_username;
 
+  @OneToOne
+  @JoinColumn(name = "theme_id", referencedColumnName = "id")
   private Integer theme_id;
 
   private String content;

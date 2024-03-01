@@ -7,5 +7,5 @@ import com.openclassrooms.mddapi.models.Comment;
 
 @Repository
 public interface CommentRepository extends CrudRepository<Comment, Integer> {
-  
+  Iterable<Comment> findByArticleId(Integer articleId);
 }
