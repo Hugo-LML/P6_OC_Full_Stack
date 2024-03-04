@@ -54,7 +54,7 @@ public class UserController {
   }
 
   @PutMapping("/subscribe/{themeId}")
-  public ResponseEntity<Object> subscribe(@PathVariable Integer themeId) {
+  public ResponseEntity<Object> subscribe(@PathVariable final Integer themeId) {
     try {
       userService.subscribe(themeId);
       return ResponseEntity.ok().build();
@@ -64,7 +64,7 @@ public class UserController {
   }
 
   @PutMapping("/unsubscribe/{themeId}")
-  public ResponseEntity<Object> unsubscribe(@PathVariable Integer themeId) {
+  public ResponseEntity<Object> unsubscribe(@PathVariable final Integer themeId) {
     try {
       userService.unsubscribe(themeId);
       return ResponseEntity.ok().build();

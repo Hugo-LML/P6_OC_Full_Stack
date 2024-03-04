@@ -18,10 +18,11 @@ public class Theme {
 
   private String description;
 
-  private Date created_at;
+  @Column(name = "created_at")
+  private Date createdAt;
 
   @PrePersist
   protected void onCreate() {
-    created_at = new Date();
+    createdAt = new Date();
   };
 }

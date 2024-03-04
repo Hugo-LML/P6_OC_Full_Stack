@@ -1,5 +1,7 @@
 package com.openclassrooms.mddapi.dto.responses;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +19,6 @@ public class ThemeReponse {
 
   private String description;
 
-  private String created_at;
+  private Date createdAt;
 
 }

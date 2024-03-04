@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.openclassrooms.mddapi.dto.requests.CommentRequest;
 import com.openclassrooms.mddapi.models.Comment;
 import com.openclassrooms.mddapi.repositories.CommentRepository;
 
+@Service
 public class CommentService {
+
   @Autowired
   private CommentRepository commentRepository;
 
@@ -31,8 +34,8 @@ public class CommentService {
           throw new IllegalArgumentException("Content is required");
         }
         Comment commentCreated = new Comment();
-        commentCreated.setUser_username(currentUser.getUsername());
-        commentCreated.setArticle_id(commentRequest.getArticle_id());
+        commentCreated.setUserUsername(currentUser.getUsername());
+        commentCreated.setArticleId(commentRequest.getArticleId());
         commentCreated.setContent(commentRequest.getContent());
         return commentRepository.save(commentCreated);
       } catch (Exception e) {

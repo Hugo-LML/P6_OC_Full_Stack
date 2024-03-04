@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,16 +35,16 @@ public class ArticleController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Object> getArticleById(Integer id) {
-    Article getArticleByIdResponse = articleService.getArticleById(id);
-    if (getArticleByIdResponse != null) {
+  public ResponseEntity<Object> getArticleById(@PathVariable final Integer id) {
+    Article article = articleService.getArticleById(id);
+    if (article != null) {
       ArticleResponse articleResponse = new ArticleResponse();
-      articleResponse.setId(articleResponse.getId());
-      articleResponse.setTitle(articleResponse.getTitle());
-      articleResponse.setContent(articleResponse.getContent());
-      articleResponse.setTheme_id(articleResponse.getTheme_id());
-      articleResponse.setContent(articleResponse.getContent());
-      articleResponse.setCreated_at(articleResponse.getCreated_at());
+      articleResponse.setId(article.getId());
+      articleResponse.setTitle(article.getTitle());
+      articleResponse.setContent(article.getContent());
+      articleResponse.setThemeId(article.getThemeId());
+      articleResponse.setContent(article.getContent());
+      articleResponse.setCreatedAt(article.getCreatedAt());
       return ResponseEntity.ok(articleResponse);
     }
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect token");

@@ -29,17 +29,19 @@ public class User {
   )
   private List<Theme> themes;
 
-  private Date created_at;
+  @Column(name = "created_at")
+  private Date createdAt;
 
-  private Date updated_at;
+  @Column(name = "updated_at")
+  private Date updatedAt;
 
   @PrePersist
   protected void onCreate() {
-    created_at = new Date();
+    createdAt = new Date();
   }
 
   @PreUpdate
   protected void onUpdate() {
-    updated_at = new Date();
+    updatedAt = new Date();
   }
 };

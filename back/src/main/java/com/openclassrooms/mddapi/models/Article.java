@@ -16,20 +16,19 @@ public class Article {
 
   private String title;
 
-  @OneToOne
-  @JoinColumn(name = "user_username", referencedColumnName = "username")
-  private String user_username;
+  @Column(name = "user_username")
+  private String userUsername;
 
-  @OneToOne
-  @JoinColumn(name = "theme_id", referencedColumnName = "id")
-  private Integer theme_id;
+  @Column(name = "theme_id")
+  private Integer themeId;
 
   private String content;
 
-  private Date created_at;
+  @Column(name = "created_at")
+  private Date createdAt;
 
   @PrePersist
   protected void onCreate() {
-    created_at = new Date();
+    createdAt = new Date();
   };
 };

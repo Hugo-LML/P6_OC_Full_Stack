@@ -12,9 +12,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class UserService {
+
   @Autowired
   UserRepository userRepository;
   
@@ -36,8 +38,8 @@ public class UserService {
       userResponse.setId(user.get().getId());
       userResponse.setUsername(user.get().getUsername());
       userResponse.setEmail(user.get().getEmail());
-      userResponse.setCreated_at(user.get().getCreated_at());
-      userResponse.setUpdated_at(user.get().getUpdated_at());
+      userResponse.setCreatedAt(user.get().getCreatedAt());
+      userResponse.setUpdatedAt(user.get().getUpdatedAt());
       return userResponse;
     }
     return null;

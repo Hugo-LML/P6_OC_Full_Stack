@@ -13,9 +13,9 @@ public class ArticleRequest {
   
   private String title;
 
-  private Integer user_username;
+  private Integer userUsername;
 
-  private Integer theme_id;
+  private Integer themeId;
   
   private String content;
 

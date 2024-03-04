@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.openclassrooms.mddapi.dto.requests.ArticleRequest;
 import com.openclassrooms.mddapi.models.Article;
 import com.openclassrooms.mddapi.repositories.ArticleRepository;
 
+@Service
 public class ArticleService {
   
   @Autowired
@@ -33,9 +35,9 @@ public class ArticleService {
         }
         Article articleCreated = new Article();
         articleCreated.setTitle(articleRequest.getTitle());
-        articleCreated.setUser_username(currentUser.getUsername());
+        articleCreated.setUserUsername(currentUser.getUsername());
         articleCreated.setContent(articleRequest.getContent());
-        articleCreated.setTheme_id(articleRequest.getTheme_id());
+        articleCreated.setThemeId(articleRequest.getThemeId());
         return articleRepository.save(articleCreated);
       } catch (Exception e) {
         return null;

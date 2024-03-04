@@ -19,8 +19,8 @@ public class UserResponse {
 
   private String email;
 
-  private Date created_at;
+  private Date createdAt;
 
-  private Date updated_at;
+  private Date updatedAt;
 
 }

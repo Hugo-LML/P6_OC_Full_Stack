@@ -14,20 +14,19 @@ public class Comment {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @OneToOne
-  @JoinColumn(name = "user_username", referencedColumnName = "username")
-  private String user_username;
+  @Column(name = "user_username")
+  private String userUsername;
 
-  @OneToOne
-  @JoinColumn(name = "article_id", referencedColumnName = "id")
-  private Integer article_id;
+  @Column(name = "article_id")
+  private Integer articleId;
 
   private String content;
 
-  private Date created_at;
+  @Column(name = "created_at")
+  private Date createdAt;
 
   @PrePersist
   protected void onCreate() {
-    created_at = new Date();
+    createdAt = new Date();
   };
 };

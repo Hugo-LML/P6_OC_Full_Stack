@@ -1,5 +1,7 @@
 package com.openclassrooms.mddapi.dto.responses;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,12 +17,12 @@ public class ArticleResponse {
 
   private String title;
 
-  private String user_username;
+  private String userUsername;
 
-  private Integer theme_id;
+  private Integer themeId;
 
   private String content;
 
-  private String created_at;
+  private Date createdAt;
 
 }
