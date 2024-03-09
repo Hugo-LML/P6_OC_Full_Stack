@@ -30,16 +30,19 @@ public class ArticleService {
   public Optional<Article> createArticle(ArticleRequest articleRequest) throws IOException {
     return userService.getCurrentUser().map(currentUser -> {
       try {
+        System.out.println(currentUser);
+        System.out.println(articleRequest);
         if (articleRequest.getTitle() == null || articleRequest.getContent() == null) {
           throw new IllegalArgumentException("Title and content are required");
         }
         Article articleCreated = new Article();
         articleCreated.setTitle(articleRequest.getTitle());
-        articleCreated.setUserUsername(currentUser.getUsername());
+        articleCreated.setUserUsername(currentUser.getActualUsername());
         articleCreated.setContent(articleRequest.getContent());
         articleCreated.setThemeId(articleRequest.getThemeId());
         return articleRepository.save(articleCreated);
       } catch (Exception e) {
+        System.out.println(e);
         return null;
       }
     });

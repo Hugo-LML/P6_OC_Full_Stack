@@ -36,7 +36,7 @@ public class UserService {
     if (user != null) {
       UserResponse userResponse = new UserResponse();
       userResponse.setId(user.get().getId());
-      userResponse.setUsername(user.get().getUsername());
+      userResponse.setUsername(user.get().getActualUsername());
       userResponse.setEmail(user.get().getEmail());
       userResponse.setCreatedAt(user.get().getCreatedAt());
       userResponse.setUpdatedAt(user.get().getUpdatedAt());
