@@ -1,5 +1,9 @@
 <div class="center">
-  <img src="/assets/logo_p6.png" alt="logo" />
-  <h1>Welcome to MDD</h1>
-  <button mat-raised-button color="primary" (click)="start()">Commencer</button>
+  <div class="w-1/2 flex justify-center">
+    <img src="/assets/logo_p6.png" alt="logo" class="w-full" />
+  </div>
+  <div class="flex space-x-8">
+    <button class="h-9 px-4 border border-black rounded-md hover:bg-violet hover:text-white hover:border-transparent transition" (click)="redirectToLogin()">Se connecter</button>
+    <button class="h-9 px-4 border border-black rounded-md hover:bg-violet hover:text-white hover:border-transparent transition" (click)="redirectToRegister()">S'inscrire</button>
+  </div>
 </div>

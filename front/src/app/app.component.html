@@ -1,1 +1,19 @@
-<router-outlet></router-outlet>
+<div>
+  <nav *ngIf="router.url !== '/'" class="fixed z-10 w-full flex justify-between items-center py-4 px-8 border-b border-black bg-white">
+    <a routerLink="" class="w-32">
+      <img src="../../../assets/logo_p6.png" alt="logo_p6" class="object-contain">
+    </a>
+    <div *ngIf="$isLogged() | async" class="flex items-center space-x-10">
+      <div class="flex space-x-6 text-xl">
+        <a routerLink="articles" routerLinkActive="text-violet-light" class="">Articles</a>
+        <a routerLink="themes" routerLinkActive="text-violet-light" class="">Thèmes</a>
+      </div>
+      <a routerLink="me">
+        <img src="../../../assets/user.svg" alt="user icon">
+      </a>
+    </div>
+  </nav>
+  <main [class.pt-36]="router.url !== '/'" class="px-8 pb-8">
+    <router-outlet></router-outlet>
+  </main>
+</div>
