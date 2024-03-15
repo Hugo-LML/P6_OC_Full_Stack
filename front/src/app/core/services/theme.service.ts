@@ -9,10 +9,14 @@ import { environment } from 'src/environments/environment';
 })
 export class ThemeService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private httpClient: HttpClient) {}
 
   getAllThemes(): Observable<Theme[]> {
-    return this.http.get<Theme[]>(`${environment.apiUrl}/themes`);
+    return this.httpClient.get<Theme[]>(`${environment.apiUrl}/themes`);
+  }
+
+  getThemeById(id: number): Observable<Theme> {
+    return this.httpClient.get<Theme>(`${environment.apiUrl}/themes/${id}`);
   }
 
 }

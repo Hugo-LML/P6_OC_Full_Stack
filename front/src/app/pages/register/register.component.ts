@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { UserRegister } from '../core/models/User';
-import { AuthService } from '../core/services/auth.service';
+import { UserRegister } from '../../core/models/User';
+import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
         password: form.value.password,
       };
       this.authService.register(userRequestBody).subscribe({
-        next: (_: void) => this.router.navigate(['/login'])
+        next: (_: void) => this.router.navigate(['/login']),
       });
     }
   }
