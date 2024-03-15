@@ -41,6 +41,7 @@ public class ArticleController {
       ArticleResponse articleResponse = new ArticleResponse();
       articleResponse.setId(article.getId());
       articleResponse.setTitle(article.getTitle());
+      articleResponse.setUserUsername(article.getUserUsername());
       articleResponse.setContent(article.getContent());
       articleResponse.setThemeId(article.getThemeId());
       articleResponse.setContent(article.getContent());

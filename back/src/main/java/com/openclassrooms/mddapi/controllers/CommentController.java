@@ -24,7 +24,7 @@ public class CommentController {
   @Autowired
   private CommentService commentService;
 
-  @GetMapping("/{id}")
+  @GetMapping("/{articleId}")
   public ResponseEntity<Object> getAllCommentsFromArticle(@PathVariable final Integer articleId) {
     Iterable<Comment> getAllCommentsFromArticleResponse = commentService.getAllCommentsFromArticle(articleId);
     if (getAllCommentsFromArticleResponse != null) {

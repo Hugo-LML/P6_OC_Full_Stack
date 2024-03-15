@@ -38,6 +38,7 @@ public class UserService {
       userResponse.setId(user.get().getId());
       userResponse.setUsername(user.get().getActualUsername());
       userResponse.setEmail(user.get().getEmail());
+      userResponse.setThemes(user.get().getThemes());
       userResponse.setCreatedAt(user.get().getCreatedAt());
       userResponse.setUpdatedAt(user.get().getUpdatedAt());
       return userResponse;
@@ -54,6 +55,7 @@ public class UserService {
   }
 
   public Optional<User> updateMe(UserRequest userRequest) {
+    System.out.println(userRequest);
     Optional<User> user = getCurrentUser();
     if (user != null) {
       user.ifPresent(u -> {

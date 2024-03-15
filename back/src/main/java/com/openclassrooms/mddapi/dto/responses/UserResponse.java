@@ -1,6 +1,9 @@
 package com.openclassrooms.mddapi.dto.responses;
 
 import java.util.Date;
+import java.util.List;
+
+import com.openclassrooms.mddapi.models.Theme;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +21,8 @@ public class UserResponse {
   private String username;
 
   private String email;
+
+  private List<Theme> themes;
 
   private Date createdAt;
 

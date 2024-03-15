@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentRequest {
   
-  private Integer userUsername;
+  private String userUsername;
   
   private Integer articleId;
   
