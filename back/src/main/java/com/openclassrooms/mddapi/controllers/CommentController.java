@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +24,7 @@ public class CommentController {
   @Autowired
   private CommentService commentService;
 
-  @GetMapping("/{id}")
+  @GetMapping("/{articleId}")
   public ResponseEntity<Object> getAllCommentsFromArticle(@PathVariable final Integer articleId) {
     Iterable<Comment> getAllCommentsFromArticleResponse = commentService.getAllCommentsFromArticle(articleId);
     if (getAllCommentsFromArticleResponse != null) {
@@ -34,7 +34,7 @@ public class CommentController {
   }
 
   @PostMapping("")
-  public ResponseEntity<Object> createComment(@ModelAttribute CommentRequest commentRequest) throws IOException {
+  public ResponseEntity<Object> createComment(@RequestBody CommentRequest commentRequest) throws IOException {
     Optional<Comment> commentCreated = commentService.createComment(commentRequest);
     if (commentCreated.isPresent()) {
       return ResponseEntity.ok(commentCreated.get());

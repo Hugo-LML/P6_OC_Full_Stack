@@ -13,7 +13,7 @@ public class ArticleRequest {
   
   private String title;
 
-  private Integer userUsername;
+  private String userUsername;
 
   private Integer themeId;
   

@@ -60,6 +60,10 @@ public class User implements UserDetails {
     return null;
   }
 
+  public String getActualUsername() {
+    return username;
+  }
+
   @Override
   public String getUsername() {
     return email;

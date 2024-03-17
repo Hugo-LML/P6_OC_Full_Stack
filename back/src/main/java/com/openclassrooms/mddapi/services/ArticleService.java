@@ -35,7 +35,7 @@ public class ArticleService {
         }
         Article articleCreated = new Article();
         articleCreated.setTitle(articleRequest.getTitle());
-        articleCreated.setUserUsername(currentUser.getUsername());
+        articleCreated.setUserUsername(currentUser.getActualUsername());
         articleCreated.setContent(articleRequest.getContent());
         articleCreated.setThemeId(articleRequest.getThemeId());
         return articleRepository.save(articleCreated);

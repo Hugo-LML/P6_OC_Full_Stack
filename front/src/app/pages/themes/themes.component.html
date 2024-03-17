@@ -1,0 +1,7 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
+  <div *ngFor="let theme of themes$ | async" class="bg-gray py-3 px-4 rounded-lg">
+    <span class="font-bold block">{{ theme.title }}</span>
+    <p class="!mt-6 line-clamp-6">{{ theme.description }}</p>
+    <button type="button" mat-raised-button color="primary" class="!block !mt-6 !mx-auto !px-8" (click)="onSubscribeOrUnsubscribe(theme.id)">{{ getButtonText(theme) }}</button>
+  </div>
+</div>

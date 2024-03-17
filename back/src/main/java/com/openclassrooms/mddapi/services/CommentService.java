@@ -34,7 +34,7 @@ public class CommentService {
           throw new IllegalArgumentException("Content is required");
         }
         Comment commentCreated = new Comment();
-        commentCreated.setUserUsername(currentUser.getUsername());
+        commentCreated.setUserUsername(currentUser.getActualUsername());
         commentCreated.setArticleId(commentRequest.getArticleId());
         commentCreated.setContent(commentRequest.getContent());
         return commentRepository.save(commentCreated);
