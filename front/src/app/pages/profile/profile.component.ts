@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Theme } from 'src/app/core/models/Theme';
 import { UserUpdate } from 'src/app/core/models/User';
-import { ThemeService } from 'src/app/core/services/theme.service';
+import { SessionService } from 'src/app/core/services/session.service';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
   username!: string;
   email!: string;
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private sessionService: SessionService, private router: Router) { }
 
   ngOnInit(): void {
     this.userService.getMe().subscribe((user) => {
@@ -35,9 +35,12 @@ export class ProfileComponent implements OnInit {
         email: this.email,
       }
       this.userService.updateMe(userRequestBody).subscribe({
-        next: () => alert('Profile updated'),
-        error: () => alert('An error occurred'),
+        next: () => alert('Votre profil a été mis à jour avec succès'),
+        error: () => alert('Une erreur est survenue lors de la mise à jour de votre profil'),
       });
+      if (form.value.email !== this.userService.getMe().subscribe((user) => user.email)) {
+        this.onLogout();
+      }
     }
   }
 
@@ -47,6 +50,11 @@ export class ProfileComponent implements OnInit {
         this.themes = this.themes.filter((theme) => theme.id !== themeId);
       });
     });
+  }
+
+  onLogout(): void {
+    this.sessionService.logOut();
+    this.router.navigate(['/']);
   }
 
 }
