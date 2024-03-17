@@ -55,7 +55,6 @@ public class UserService {
   }
 
   public Optional<User> updateMe(UserRequest userRequest) {
-    System.out.println(userRequest);
     Optional<User> user = getCurrentUser();
     if (user != null) {
       user.ifPresent(u -> {

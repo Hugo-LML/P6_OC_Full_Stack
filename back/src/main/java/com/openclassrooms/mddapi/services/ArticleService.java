@@ -30,8 +30,6 @@ public class ArticleService {
   public Optional<Article> createArticle(ArticleRequest articleRequest) throws IOException {
     return userService.getCurrentUser().map(currentUser -> {
       try {
-        System.out.println(currentUser);
-        System.out.println(articleRequest);
         if (articleRequest.getTitle() == null || articleRequest.getContent() == null) {
           throw new IllegalArgumentException("Title and content are required");
         }
@@ -42,7 +40,6 @@ public class ArticleService {
         articleCreated.setThemeId(articleRequest.getThemeId());
         return articleRepository.save(articleCreated);
       } catch (Exception e) {
-        System.out.println(e);
         return null;
       }
     });

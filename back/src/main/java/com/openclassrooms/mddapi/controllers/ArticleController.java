@@ -54,7 +54,6 @@ public class ArticleController {
   @PostMapping("")
   public ResponseEntity<Object> createArticle(@RequestBody ArticleRequest articleRequest) throws IOException {
     Optional<Article> articleCreated = articleService.createArticle(articleRequest);
-    System.out.println(articleCreated);
     if (articleCreated.isPresent()) {
       return ResponseEntity.ok(articleCreated.get());
     }
