@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
           this.sessionService.logIn(response);
           this.router.navigate(['/articles']);
         },
+        error: () => alert('Une erreur est survenue lors de la connexion'),
       });
     }
   }

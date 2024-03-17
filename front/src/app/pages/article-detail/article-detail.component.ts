@@ -54,6 +54,7 @@ export class ArticleDetailComponent implements OnInit {
           this.commentContent = ''
           this.comments.push(commentCreated);
         },
+        error: () => alert('Une erreur est survenue lors de l\'ajout de votre commentaire'),
       });
     }
   }
