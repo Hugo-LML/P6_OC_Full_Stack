@@ -16,9 +16,9 @@
       <span class="block !mt-3">{{ comment.userUsername }}</span>
       <p class="bg-gray rounded-md p-3">{{ comment.content }}</p>
     </div>
-    <form #commentForm="ngForm" (ngSubmit)="onSubmitComment(commentForm)" class="!mt-8 flex space-x-4 md:space-x-8">
-      <textarea name="commentContent" [(ngModel)]="commentContent" class="w-full" rows="4" placeholder="Écrivez ici votre commentaire"></textarea>
-      <button type="submit">
+    <form [formGroup]="createCommentForm" class="!mt-8 flex space-x-4 md:space-x-8">
+      <textarea name="commentContent" formControlName="commentContent" class="w-full" rows="4" placeholder="Écrivez ici votre commentaire"></textarea>
+      <button type="submit" (click)="onSubmitForm()" [disabled]="createCommentForm.invalid">
         <img src="../../../assets/send.svg" alt="send">
       </button>
     </form>

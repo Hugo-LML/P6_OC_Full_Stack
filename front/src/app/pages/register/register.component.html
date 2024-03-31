@@ -7,20 +7,20 @@
       <img src="/assets/logo_p6.png" alt="logo" class="w-full" />
     </div>
     <h1 class="!font-bold !text-2xl !text-center">Inscription</h1>
-    <form class="space-y-4 !mt-10 flex flex-col" #registerForm="ngForm" (ngSubmit)="onSubmitForm(registerForm)">
+    <form class="space-y-4 !mt-10 flex flex-col" [formGroup]="registerForm">
       <div class="flex flex-col space-y-1">
         <label for="username">Nom d'utilisateur</label>
-        <input type="text" name="username" [(ngModel)]="username" />
+        <input type="text" name="username" formControlName="username" />
       </div>
       <div class="flex flex-col space-y-1">
         <label for="email">Adresse e-mail</label>
-        <input type="email" name="email" [(ngModel)]="email" />
+        <input type="email" name="email" formControlName="email" />
       </div>
       <div class="flex flex-col space-y-1">
         <label for="password">Mot de passe</label>
-        <input type="password" name="password" [(ngModel)]="password" />
+        <input type="password" name="password" formControlName="password" />
       </div>
-      <button type="submit" mat-raised-button color="primary" class="!mt-10 !mx-auto !px-8">S'inscrire</button>
+      <button type="submit" mat-raised-button color="primary" class="!mt-10 !mx-auto !px-8" (click)="onSubmitForm()" [disabled]="registerForm.invalid">S'inscrire</button>
     </form>
   </div>
 </div>
