@@ -1,6 +1,7 @@
-package com.openclassrooms.mddapi.dto.requests;
+package com.openclassrooms.mddapi.payload.requests;
 
-import org.springframework.lang.NonNull;
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,10 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginRequest {
   
-  @NonNull
+  @NotNull
   private String email;
 
-  @NonNull
+  @NotNull
   String password;
 
 }

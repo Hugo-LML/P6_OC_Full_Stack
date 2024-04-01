@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.openclassrooms.mddapi.mappers.ThemeMapper;
 import com.openclassrooms.mddapi.models.Theme;
 import com.openclassrooms.mddapi.services.ThemeService;
 
@@ -18,11 +19,14 @@ public class ThemeController {
   @Autowired
   private ThemeService themeService;
 
+  @Autowired
+  private ThemeMapper themeMapper;
+
   @GetMapping("")
   public ResponseEntity<Object> getAllThemes() {
     Iterable<Theme> getAllThemesResponse = themeService.getAllThemes();
     if (getAllThemesResponse != null) {
-      return ResponseEntity.ok(getAllThemesResponse);
+      return ResponseEntity.ok().body(themeMapper.toDto(getAllThemesResponse));
     }
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect token");
   }
@@ -31,7 +35,7 @@ public class ThemeController {
   public ResponseEntity<Object> getThemeById(@PathVariable final Integer id) {
     Theme getThemeByIdResponse = themeService.getThemeById(id);
     if (getThemeByIdResponse != null) {
-      return ResponseEntity.ok(getThemeByIdResponse);
+      return ResponseEntity.ok().body((themeMapper.toDto(getThemeByIdResponse)));
     }
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect token");
   }

@@ -1,6 +1,5 @@
-package com.openclassrooms.mddapi.dto.requests;
+package com.openclassrooms.mddapi.payload.requests;
 
-import org.springframework.lang.NonNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,15 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+public class UserRequest {
   
-  @NonNull
   private String username;
 
-  @NonNull
   private String email;
-
-  @NonNull
-  private String password;
 
 }

@@ -1,26 +1,29 @@
-package com.openclassrooms.mddapi.dto.responses;
+package com.openclassrooms.mddapi.dto;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class ArticleResponse {
+@AllArgsConstructor
+public class CommentDto {
   
+  @NotNull
   private Integer id;
 
-  private String title;
-
+  @NotBlank
   private String userUsername;
 
-  private Integer themeId;
+  @NotNull
+  private Integer articleId;
 
+  @NotBlank
   private String content;
 
   private Date createdAt;

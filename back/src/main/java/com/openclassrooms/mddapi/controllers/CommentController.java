@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.openclassrooms.mddapi.dto.requests.CommentRequest;
+import com.openclassrooms.mddapi.mappers.CommentMapper;
 import com.openclassrooms.mddapi.models.Comment;
+import com.openclassrooms.mddapi.payload.requests.CommentRequest;
 import com.openclassrooms.mddapi.services.CommentService;
 
 @RestController
@@ -24,11 +25,14 @@ public class CommentController {
   @Autowired
   private CommentService commentService;
 
+  @Autowired
+  private CommentMapper commentMapper;
+
   @GetMapping("/{articleId}")
   public ResponseEntity<Object> getAllCommentsFromArticle(@PathVariable final Integer articleId) {
     Iterable<Comment> getAllCommentsFromArticleResponse = commentService.getAllCommentsFromArticle(articleId);
     if (getAllCommentsFromArticleResponse != null) {
-      return ResponseEntity.ok(getAllCommentsFromArticleResponse);
+      return ResponseEntity.ok().body(commentMapper.toDto(getAllCommentsFromArticleResponse));
     }
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect token");
   }
@@ -37,7 +41,7 @@ public class CommentController {
   public ResponseEntity<Object> createComment(@RequestBody CommentRequest commentRequest) throws IOException {
     Optional<Comment> commentCreated = commentService.createComment(commentRequest);
     if (commentCreated.isPresent()) {
-      return ResponseEntity.ok(commentCreated.get());
+      return ResponseEntity.ok().body(commentMapper.toDto(commentCreated.get()));
     }
     return ResponseEntity.badRequest().body("Incorrect comment body request or token");
   }
