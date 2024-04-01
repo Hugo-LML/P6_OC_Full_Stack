@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.openclassrooms.mddapi.dto.requests.CommentRequest;
 import com.openclassrooms.mddapi.models.Comment;
+import com.openclassrooms.mddapi.payload.requests.CommentRequest;
 import com.openclassrooms.mddapi.repositories.CommentRepository;
 
 @Service

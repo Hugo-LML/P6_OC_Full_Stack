@@ -1,9 +1,9 @@
 package com.openclassrooms.mddapi.services;
 
-import com.openclassrooms.mddapi.dto.requests.UserRequest;
-import com.openclassrooms.mddapi.dto.responses.UserResponse;
+import com.openclassrooms.mddapi.dto.UserDto;
 import com.openclassrooms.mddapi.models.Theme;
 import com.openclassrooms.mddapi.models.User;
+import com.openclassrooms.mddapi.payload.requests.UserRequest;
 import com.openclassrooms.mddapi.repositories.ThemeRepository;
 import com.openclassrooms.mddapi.repositories.UserRepository;
 
@@ -26,22 +26,22 @@ public class UserService {
   public Optional<User> getCurrentUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication != null) {
-      return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+      return userRepository.findByEmail(authentication.getName());
     }
     return null;
   }
 
-  public UserResponse getMe() {
+  public Optional<UserDto> getMe() {
     Optional<User> user = getCurrentUser();
     if (user != null) {
-      UserResponse userResponse = new UserResponse();
+      UserDto userResponse = new UserDto();
       userResponse.setId(user.get().getId());
       userResponse.setUsername(user.get().getActualUsername());
       userResponse.setEmail(user.get().getEmail());
       userResponse.setThemes(user.get().getThemes());
       userResponse.setCreatedAt(user.get().getCreatedAt());
       userResponse.setUpdatedAt(user.get().getUpdatedAt());
-      return userResponse;
+      return Optional.of(userResponse);
     }
     return null;
   }

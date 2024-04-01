@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.openclassrooms.mddapi.dto.requests.ArticleRequest;
 import com.openclassrooms.mddapi.models.Article;
+import com.openclassrooms.mddapi.payload.requests.ArticleRequest;
 import com.openclassrooms.mddapi.repositories.ArticleRepository;
 
 @Service
@@ -30,8 +30,8 @@ public class ArticleService {
   public Optional<Article> createArticle(ArticleRequest articleRequest) throws IOException {
     return userService.getCurrentUser().map(currentUser -> {
       try {
-        if (articleRequest.getTitle() == null || articleRequest.getContent() == null) {
-          throw new IllegalArgumentException("Title and content are required");
+        if (articleRequest.getThemeId() == null || articleRequest.getTitle() == null || articleRequest.getContent() == null) {
+          throw new IllegalArgumentException("Theme ID, title and content are required");
         }
         Article articleCreated = new Article();
         articleCreated.setTitle(articleRequest.getTitle());

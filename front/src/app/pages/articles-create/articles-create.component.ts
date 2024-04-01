@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ArticleCreate } from 'src/app/core/models/Article';
+import { Subscription } from 'rxjs';
 import { Theme } from 'src/app/core/models/Theme';
 import { ArticleService } from 'src/app/core/services/article.service';
 import { ThemeService } from 'src/app/core/services/theme.service';
@@ -10,40 +10,58 @@ import { UserService } from 'src/app/core/services/user.service';
 @Component({
   selector: 'app-articles-create',
   templateUrl: './articles-create.component.html',
-  styleUrls: ['./articles-create.component.scss']
+  styleUrls: ['./articles-create.component.scss'],
 })
-export class ArticlesCreateComponent implements OnInit {
+export class ArticlesCreateComponent implements OnInit, OnDestroy {
+  private themeService = inject(ThemeService);
+  private userService = inject(UserService);
+  private articleService = inject(ArticleService);
+  private router = inject(Router);
+  private formBuilder = inject(FormBuilder);
 
   themes: Theme[] = [];
-
   userUsername!: string;
-  articleThemeId!: number;
-  articleTitle!: string;
-  articleContent!: string;
+  createArticleForm!: FormGroup;
 
-  constructor(private userService: UserService, private articleService: ArticleService, private router: Router, private themeService: ThemeService) { }
+  private userSubscription: Subscription | undefined;
+  private themeSubscription: Subscription | undefined;
 
+  // Retrieve all the themes to display them in the form to create an article and get the username of the connected user
   ngOnInit(): void {
-    this.userService.getMe().subscribe((user) => {
+    this.userSubscription = this.userService.getMe().subscribe((user) => {
       this.userUsername = user.username;
     });
-    this.themeService.getAllThemes().subscribe((themes) => {
+    this.themeSubscription = this.themeService.getAllThemes().subscribe((themes) => {
       this.themes = themes;
+    });
+    this.createArticleForm = this.formBuilder.group({
+      articleThemeId: [null, Validators.required],
+      articleTitle: [null, Validators.required],
+      articleContent: [null, Validators.required],
     });
   }
 
-  onSubmitForm(form: NgForm): void {
-    if (this.articleThemeId && form.value.articleTitle && form.value.articleContent) {
-      const articleRequestBody = {
-        userUsername: this.userUsername,
-        themeId: this.articleThemeId,
-        title: form.value.articleTitle,
-        content: form.value.articleContent,
-      }
-      this.articleService.createArticle(articleRequestBody).subscribe({
-        next: (articleCreated: ArticleCreate) => this.router.navigate(['/articles'])
-      });
-    }
+  // Create an article and redirect to the article list page when the form is submitted
+  onSubmitForm(): void {
+    const articleRequestBody = {
+      userUsername: this.userUsername,
+      themeId: this.createArticleForm.value.articleThemeId,
+      title: this.createArticleForm.value.articleTitle,
+      content: this.createArticleForm.value.articleContent,
+    };
+    this.articleService.createArticle(articleRequestBody).subscribe({
+      next: () =>
+        this.router.navigate(['/articles']),
+    });
   }
 
+  // Unsubscribe from the observables when the component is destroyed
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
+  }
 }

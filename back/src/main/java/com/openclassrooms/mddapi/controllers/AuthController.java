@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.openclassrooms.mddapi.dto.requests.LoginRequest;
-import com.openclassrooms.mddapi.dto.requests.RegisterRequest;
-import com.openclassrooms.mddapi.dto.responses.AuthResponse;
+import com.openclassrooms.mddapi.payload.requests.LoginRequest;
+import com.openclassrooms.mddapi.payload.requests.RegisterRequest;
+import com.openclassrooms.mddapi.payload.responses.AuthResponse;
 import com.openclassrooms.mddapi.services.AuthService;
 
 @RestController

@@ -1,14 +1,16 @@
 <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 justify-between items-center">
-  <button mat-raised-button color="primary" (click)="redirectToCreateArticle()">Créer un article</button>
+  <a routerLink="/articles/create">
+    <button mat-raised-button color="primary">Créer un article</button>
+  </a>
   <span class="font-bold">Trier par &darr;</span>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10 !pt-4 md:!pt-10">
-  <div *ngFor="let article of articles$ | async" class="bg-gray py-3 px-4 rounded-lg cursor-pointer" (click)="redirectToArticleDetail(article.id)">
+  <a *ngFor="let article of articles$ | async" class="bg-gray py-3 px-4 rounded-lg cursor-pointer" [routerLink]="['/articles', article.id]">
     <span class="font-bold block">{{ article.title }}</span>
     <div class="grid grid-cols-2 !mt-6">
       <span>{{ article.createdAt | date }}</span>
       <span>{{ article.userUsername }}</span>
     </div>
     <p class="!mt-6 line-clamp-6">{{ article.content }}</p>
-  </div>
+  </a>
 </div>

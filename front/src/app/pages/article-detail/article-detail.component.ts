@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Article } from 'src/app/core/models/Article';
 import { Comment, CommentCreate } from 'src/app/core/models/Comment';
 import { Theme } from 'src/app/core/models/Theme';
@@ -14,49 +15,75 @@ import { UserService } from 'src/app/core/services/user.service';
   templateUrl: './article-detail.component.html',
   styleUrls: ['./article-detail.component.scss']
 })
-export class ArticleDetailComponent implements OnInit {
+
+export class ArticleDetailComponent implements OnInit, OnDestroy {
+  private articleService = inject(ArticleService);
+  private themeService = inject(ThemeService);
+  private commentService = inject(CommentService);
+  private userService = inject(UserService);
+  private route = inject(ActivatedRoute);
+  private formBuilder = inject(FormBuilder);
 
   article!: Article;
   theme!: Theme;
   comments!: Comment[];
-
-  commentContent!: string;
-
   userUsername!: string;
+  createCommentForm!: FormGroup;
 
-  constructor(private articleService: ArticleService, private themeService: ThemeService, private commentService: CommentService, private userService: UserService, private route: ActivatedRoute) { }
+  private articleSubscription!: Subscription;
+  private themeSubscription!: Subscription;
+  private commentsSubscription!: Subscription;
+  private userSubscription!: Subscription;
 
+  // Retrieve all the informations needed to display the article detail page and create a comment
   ngOnInit(): void {
     const articleId = parseInt(this.route.snapshot.paramMap.get('id')!);
-    this.articleService.getArticleById(articleId).subscribe((article: Article) => {
+    this.articleSubscription = this.articleService.getArticleById(articleId).subscribe((article: Article) => {
       this.article = article;
-      this.themeService.getThemeById(article.themeId).subscribe((theme: Theme) => {
+      this.themeSubscription = this.themeService.getThemeById(article.themeId).subscribe((theme: Theme) => {
         this.theme = theme;
       });
-      this.commentService.getAllCommentsFromArticle(articleId).subscribe((comments: Comment[]) => {
+      this.commentsSubscription = this.commentService.getAllCommentsFromArticle(articleId).subscribe((comments: Comment[]) => {
         this.comments = comments;
       });
     });
-    this.userService.getMe().subscribe((user) => {
+    this.userSubscription = this.userService.getMe().subscribe((user) => {
       this.userUsername = user.username;
+    });
+    this.createCommentForm = this.formBuilder.group({
+      commentContent: [null, Validators.required],
     });
   }
 
-  onSubmitComment(form: NgForm): void {
-    if (this.userUsername, form.value.commentContent) {
-      const commentCreated: CommentCreate = {
-        userUsername: this.userUsername,
-        content: form.value.commentContent,
-        articleId: this.article.id,
-      }
-      this.commentService.createComment(commentCreated).subscribe({
-        next: (commentCreated: Comment) => {
-          this.commentContent = ''
-          this.comments.push(commentCreated);
-        },
-        error: () => alert('Une erreur est survenue lors de l\'ajout de votre commentaire'),
-      });
+  // Create a comment and add it to the list of comments displayed on the page when the form is submitted
+  onSubmitForm(): void {
+    const commentCreated: CommentCreate = {
+      userUsername: this.userUsername,
+      content: this.createCommentForm.value.commentContent,
+      articleId: this.article.id,
+    }
+    this.commentService.createComment(commentCreated).subscribe({
+      next: (commentCreated: Comment) => {
+        this.createCommentForm.reset();
+        this.comments.push(commentCreated);
+      },
+      error: () => alert('Une erreur est survenue lors de l\'ajout de votre commentaire'),
+    });
+  }
+
+  // Unsubscribe from all the subscriptions when the component is destroyed
+  ngOnDestroy(): void {
+    if (this.articleSubscription) {
+      this.articleSubscription.unsubscribe();
+    }
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
+    if (this.commentsSubscription) {
+      this.commentsSubscription.unsubscribe();
+    }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
-  
 }

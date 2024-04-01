@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.openclassrooms.mddapi.dto.requests.UserRequest;
-import com.openclassrooms.mddapi.dto.responses.UserResponse;
+import com.openclassrooms.mddapi.dto.UserDto;
 import com.openclassrooms.mddapi.models.User;
+import com.openclassrooms.mddapi.payload.requests.UserRequest;
 import com.openclassrooms.mddapi.services.UserService;
 
 @RestController
@@ -27,9 +27,9 @@ public class UserController {
 
   @GetMapping("/me")
   public ResponseEntity<Object> getMe() {
-    UserResponse getMeResponse = userService.getMe();
+    Optional<UserDto> getMeResponse = userService.getMe();
     if (getMeResponse != null) {
-      return ResponseEntity.ok(getMeResponse);
+      return ResponseEntity.ok().body(getMeResponse.get());
     }
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect token");
   }

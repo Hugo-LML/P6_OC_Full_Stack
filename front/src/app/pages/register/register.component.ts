@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserRegister } from '../../core/models/User';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
@@ -9,26 +9,33 @@ import { Router } from '@angular/router';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent implements OnInit {
-  username!: string;
-  email!: string;
-  password!: string;
+export class RegisterComponent implements OnInit{
 
-  constructor(private authService: AuthService, private router: Router) {}
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private formBuilder = inject(FormBuilder);
 
-  ngOnInit(): void {}
+  registerForm!: FormGroup;
 
-  onSubmitForm(form: NgForm): void {
-    if (form.value.username && form.value.email && form.value.password) {
-      const userRequestBody: UserRegister = {
-        username: form.value.username,
-        email: form.value.email,
-        password: form.value.password,
-      };
-      this.authService.register(userRequestBody).subscribe({
-        next: (_: void) => this.router.navigate(['/login']),
-        error: () => alert('Une erreur est survenue lors de l\'inscription'),
-      });
-    }
+  // Initialize the form
+  ngOnInit(): void {
+    this.registerForm = this.formBuilder.group({
+      username: [null, Validators.required],
+      email: [null, Validators.required],
+      password: [null, Validators.required],
+    });
+  }
+
+  // Register the user and redirect to the login page when the form is submitted
+  onSubmitForm(): void {
+    const userRequestBody: UserRegister = {
+      username: this.registerForm.value.username,
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password,
+    };
+    this.authService.register(userRequestBody).subscribe({
+      next: () => this.router.navigate(['/login']),
+      error: () => alert('Une erreur est survenue lors de l\'inscription'),
+    });
   }
 }

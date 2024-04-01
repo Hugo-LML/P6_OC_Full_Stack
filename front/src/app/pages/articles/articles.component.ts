@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Component, inject } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Article } from 'src/app/core/models/Article';
 import { ArticleService } from 'src/app/core/services/article.service';
 
@@ -9,22 +8,10 @@ import { ArticleService } from 'src/app/core/services/article.service';
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.scss']
 })
-export class ArticlesComponent implements OnInit {
+export class ArticlesComponent {
   
-  public articles$: Observable<Article[] | null> = of(null);
+  private articleService = inject(ArticleService);
 
-  constructor(private articleService: ArticleService, private router: Router) {}
-
-  ngOnInit(): void {
-    this.articles$ = this.articleService.getAllArticles();
-  }
-
-  redirectToCreateArticle(): void {
-    this.router.navigate(['/articles/create']);
-  }
-
-  redirectToArticleDetail(articleId: number): void {
-    this.router.navigate(['/articles', articleId]);
-  }
+  public articles$: Observable<Article[]> = this.articleService.getAllArticles();
 
 }

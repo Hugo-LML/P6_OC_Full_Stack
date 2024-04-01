@@ -1,4 +1,6 @@
-package com.openclassrooms.mddapi.dto.requests;
+package com.openclassrooms.mddapi.payload.requests;
+
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +11,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequest {
+public class RegisterRequest {
   
+  @NotNull
   private String username;
 
+  @NotNull
   private String email;
+
+  @NotNull
+  private String password;
 
 }

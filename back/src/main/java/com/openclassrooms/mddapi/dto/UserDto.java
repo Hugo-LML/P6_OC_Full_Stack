@@ -1,25 +1,29 @@
-package com.openclassrooms.mddapi.dto.responses;
+package com.openclassrooms.mddapi.dto;
 
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import com.openclassrooms.mddapi.models.Theme;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserResponse {
-
+@AllArgsConstructor
+public class UserDto {
+  
+  @NotNull
   private Integer id;
   
+  @NotBlank
   private String username;
 
+  @NotBlank
   private String email;
 
   private List<Theme> themes;

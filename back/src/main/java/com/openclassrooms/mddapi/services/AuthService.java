@@ -7,10 +7,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.openclassrooms.mddapi.dto.requests.LoginRequest;
-import com.openclassrooms.mddapi.dto.requests.RegisterRequest;
-import com.openclassrooms.mddapi.dto.responses.AuthResponse;
 import com.openclassrooms.mddapi.models.User;
+import com.openclassrooms.mddapi.payload.requests.LoginRequest;
+import com.openclassrooms.mddapi.payload.requests.RegisterRequest;
+import com.openclassrooms.mddapi.payload.responses.AuthResponse;
 import com.openclassrooms.mddapi.repositories.UserRepository;
 
 import lombok.RequiredArgsConstructor;
