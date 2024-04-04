@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Article } from 'src/app/core/models/Article';
 import { Comment, CommentCreate } from 'src/app/core/models/Comment';
 import { Theme } from 'src/app/core/models/Theme';
@@ -30,24 +30,21 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
   userUsername!: string;
   createCommentForm!: FormGroup;
 
-  private articleSubscription!: Subscription;
-  private themeSubscription!: Subscription;
-  private commentsSubscription!: Subscription;
-  private userSubscription!: Subscription;
+  private destroy$: Subject<void> = new Subject<void>();
 
   // Retrieve all the informations needed to display the article detail page and create a comment
   ngOnInit(): void {
     const articleId = parseInt(this.route.snapshot.paramMap.get('id')!);
-    this.articleSubscription = this.articleService.getArticleById(articleId).subscribe((article: Article) => {
+    this.articleService.getArticleById(articleId).pipe(takeUntil(this.destroy$)).subscribe((article: Article) => {
       this.article = article;
-      this.themeSubscription = this.themeService.getThemeById(article.themeId).subscribe((theme: Theme) => {
+      this.themeService.getThemeById(article.themeId).pipe(takeUntil(this.destroy$)).subscribe((theme: Theme) => {
         this.theme = theme;
       });
-      this.commentsSubscription = this.commentService.getAllCommentsFromArticle(articleId).subscribe((comments: Comment[]) => {
+      this.commentService.getAllCommentsFromArticle(articleId).pipe(takeUntil(this.destroy$)).subscribe((comments: Comment[]) => {
         this.comments = comments;
       });
     });
-    this.userSubscription = this.userService.getMe().subscribe((user) => {
+    this.userService.getMe().pipe(takeUntil(this.destroy$)).subscribe((user) => {
       this.userUsername = user.username;
     });
     this.createCommentForm = this.formBuilder.group({
@@ -62,7 +59,7 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
       content: this.createCommentForm.value.commentContent,
       articleId: this.article.id,
     }
-    this.commentService.createComment(commentCreated).subscribe({
+    this.commentService.createComment(commentCreated).pipe(takeUntil(this.destroy$)).subscribe({
       next: (commentCreated: Comment) => {
         this.createCommentForm.reset();
         this.comments.push(commentCreated);
@@ -71,19 +68,9 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Unsubscribe from all the subscriptions when the component is destroyed
+  // Unsubscribe from the observables when the component is destroyed
   ngOnDestroy(): void {
-    if (this.articleSubscription) {
-      this.articleSubscription.unsubscribe();
-    }
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
-    if (this.commentsSubscription) {
-      this.commentsSubscription.unsubscribe();
-    }
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

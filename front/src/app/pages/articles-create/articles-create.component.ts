@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Theme } from 'src/app/core/models/Theme';
 import { ArticleService } from 'src/app/core/services/article.service';
 import { ThemeService } from 'src/app/core/services/theme.service';
@@ -23,15 +23,14 @@ export class ArticlesCreateComponent implements OnInit, OnDestroy {
   userUsername!: string;
   createArticleForm!: FormGroup;
 
-  private userSubscription: Subscription | undefined;
-  private themeSubscription: Subscription | undefined;
+  private destroy$: Subject<void> = new Subject<void>();
 
   // Retrieve all the themes to display them in the form to create an article and get the username of the connected user
   ngOnInit(): void {
-    this.userSubscription = this.userService.getMe().subscribe((user) => {
+    this.userService.getMe().pipe(takeUntil(this.destroy$)).subscribe((user) => {
       this.userUsername = user.username;
     });
-    this.themeSubscription = this.themeService.getAllThemes().subscribe((themes) => {
+    this.themeService.getAllThemes().pipe(takeUntil(this.destroy$)).subscribe((themes) => {
       this.themes = themes;
     });
     this.createArticleForm = this.formBuilder.group({
@@ -49,7 +48,7 @@ export class ArticlesCreateComponent implements OnInit, OnDestroy {
       title: this.createArticleForm.value.articleTitle,
       content: this.createArticleForm.value.articleContent,
     };
-    this.articleService.createArticle(articleRequestBody).subscribe({
+    this.articleService.createArticle(articleRequestBody).pipe(takeUntil(this.destroy$)).subscribe({
       next: () =>
         this.router.navigate(['/articles']),
     });
@@ -57,11 +56,7 @@ export class ArticlesCreateComponent implements OnInit, OnDestroy {
 
   // Unsubscribe from the observables when the component is destroyed
   ngOnDestroy(): void {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
