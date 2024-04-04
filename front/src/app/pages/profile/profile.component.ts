@@ -1,6 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { Theme } from 'src/app/core/models/Theme';
 import { UserUpdate } from 'src/app/core/models/User';
 import { SessionService } from 'src/app/core/services/session.service';
@@ -11,7 +12,7 @@ import { UserService } from 'src/app/core/services/user.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   private userService = inject(UserService);
   private sessionService = inject(SessionService);
   private router = inject(Router);
@@ -22,9 +23,11 @@ export class ProfileComponent implements OnInit {
 
   updateProfileForm!: FormGroup;
 
+  private destroy$: Subject<void> = new Subject<void>();
+
   // Retrieve the connected user's information to display them in the form and get the themes he is subscribed to
   ngOnInit(): void {
-    this.userService.getMe().subscribe((user) => {
+    this.userService.getMe().pipe(takeUntil(this.destroy$)).subscribe((user) => {
       this.userEmail = user.email;
       this.updateProfileForm = this.formBuilder.group({
         username: [user.username, Validators.required],
@@ -40,7 +43,7 @@ export class ProfileComponent implements OnInit {
       username: this.updateProfileForm.value.username,
       email: this.updateProfileForm.value.email,
     }
-    this.userService.updateMe(userRequestBody).subscribe({
+    this.userService.updateMe(userRequestBody).pipe(takeUntil(this.destroy$)).subscribe({
       next: () => alert('Votre profil a été mis à jour avec succès'),
       error: () => alert('Une erreur est survenue lors de la mise à jour de votre profil'),
     });
@@ -52,10 +55,8 @@ export class ProfileComponent implements OnInit {
 
   // Unsubscribe from a theme and remove it from the list of themes displayed on the page
   onUnsubscribe(themeId: number): void {
-    this.userService.unSubscribeToTheme(themeId).subscribe(() => {
-      this.userService.unSubscribeToTheme(themeId).subscribe(() => {
-        this.themes = this.themes.filter((theme) => theme.id !== themeId);
-      });
+    this.userService.unSubscribeToTheme(themeId).pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.themes = this.themes.filter((theme) => theme.id !== themeId);
     });
   }
 
@@ -63,6 +64,12 @@ export class ProfileComponent implements OnInit {
   onLogout(): void {
     this.sessionService.logOut();
     this.router.navigate(['/']);
+  }
+
+  // Unsubscribe from the observables when the component is destroyed
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }
